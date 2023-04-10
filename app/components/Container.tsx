@@ -10,7 +10,7 @@ const Container: FunctionComponent<ContainerProps> = ({ children }) => {
   return (
     <div
       className="
-      max-w-[320px]
+      max-w-[2520px]
       mx-auto
       xl:px-20
       md:px-10
