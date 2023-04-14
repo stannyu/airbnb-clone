@@ -1,24 +1,24 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-
-import axios from "axios";
 import { signIn } from "next-auth/react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 
 import Modal from "./Modal";
 import Heading from "../Heading";
-import Input from "../inputs/Input";
 import Button from "../Button";
+import Input from "../inputs/Input";
 
-  const RegisterModal = () => {
+const LoginModal = () => {
+  const router = useRouter();
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,7 +29,6 @@ import Button from "../Button";
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
@@ -38,24 +37,23 @@ import Button from "../Button";
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
 
-    axios
-      .post("/api/register", data)
-      .then((res) => {
-        console.log(res);
-        registerModal.onClose();
-      })
-      .catch((error) => {
-        toast.error("Something went wrong! Please try again later.");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+    }).then((callback) => {
+      setIsLoading(false);
 
-  const handleOnLoginClick = useCallback(() => {
-    registerModal.onClose();
-    loginModal.onOpen();
-  }, [registerModal, loginModal]);
+      if (callback?.ok) {
+        toast.success("Successfully logged in!");
+        router.refresh();
+        loginModal.onClose();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    });
+  };
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -64,14 +62,6 @@ import Button from "../Button";
         register={register}
         id="email"
         label="Email"
-        disabled={isLoading}
-        errors={errors}
-        required
-      />
-      <Input
-        register={register}
-        id="name"
-        label="Name"
         disabled={isLoading}
         errors={errors}
         required
@@ -108,7 +98,7 @@ import Button from "../Button";
           <div>Already have an account? </div>
           <div
             className="text-neutral-800 cursor-pointer hover:underline"
-            onClick={handleOnLoginClick}
+            onClick={registerModal.onClose}
           >
             Log in{" "}
           </div>
@@ -120,10 +110,10 @@ import Button from "../Button";
   return (
     <Modal
       disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title="Register"
+      isOpen={loginModal.isOpen}
+      title="Log in to Airbnb"
       actionLabel="Continue"
-      onClose={registerModal.onClose}
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -131,4 +121,4 @@ import Button from "../Button";
   );
 };
 
-export default RegisterModal;
+export default LoginModal;
