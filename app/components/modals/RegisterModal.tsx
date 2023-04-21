@@ -18,9 +18,10 @@ import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Button from "../Button";
 
-  const RegisterModal = () => {
+const RegisterModal = (): JSX.Element => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
