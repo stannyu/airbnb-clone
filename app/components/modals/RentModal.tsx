@@ -193,7 +193,7 @@ const RentModal = () => {
     );
   }
 
-  if (step === StepsType.IMAGE) {
+if (step === StepsType.IMAGE) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
