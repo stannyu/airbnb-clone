@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       imageSrc,
       category,
       roomCount,
-      bathCount: bathroomCount,
+      bathroomCount,
       guestCount,
       locationValue: location.value,
       price: parseInt(price, 10),
