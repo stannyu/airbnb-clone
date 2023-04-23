@@ -1,5 +1,11 @@
 "use client";
-import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
@@ -17,6 +23,8 @@ interface UserMenuProps {
 }
 
 const UserMenu: FunctionComponent<UserMenuProps> = ({ currentUser }) => {
+  const router = useRouter();
+
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentModal = useRentModal();
@@ -38,7 +46,7 @@ const UserMenu: FunctionComponent<UserMenuProps> = ({ currentUser }) => {
   }, [registerModal]);
 
   const onRent = useCallback(() => {
-    if(!currentUser) {
+    if (!currentUser) {
       return loginModal.onOpen();
     }
 
@@ -85,7 +93,7 @@ const UserMenu: FunctionComponent<UserMenuProps> = ({ currentUser }) => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser && currentUser.image}/>
+            <Avatar src={currentUser && currentUser.image} />
           </div>
         </div>
       </div>
@@ -107,9 +115,15 @@ const UserMenu: FunctionComponent<UserMenuProps> = ({ currentUser }) => {
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => {}} label="My trips" />
+                <MenuItem
+                  onClick={() => router.push("/trips")}
+                  label="My trips"
+                />
                 <MenuItem onClick={() => {}} label="My favorites" />
-                <MenuItem onClick={() => {}} label="My reservations" />
+                <MenuItem
+                  onClick={() => router.push("/reservations")}
+                  label="My reservations"
+                />
                 <MenuItem onClick={() => {}} label="My properties" />
                 <MenuItem onClick={rentModal.onOpen} label="Airbnb my home" />
                 <hr />
