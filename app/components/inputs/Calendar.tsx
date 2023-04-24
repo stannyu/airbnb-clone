@@ -5,13 +5,13 @@ import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
-interface DatePickerProps {
+interface CalendarProps {
   value: Range;
   onChange: (value: RangeKeyDict) => void;
   disabledDates?: Date[];
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({
+const Calendar: React.FC<CalendarProps> = ({
   value,
   onChange,
   disabledDates,
@@ -30,4 +30,4 @@ const DatePicker: React.FC<DatePickerProps> = ({
   );
 };
 
-export default DatePicker;
+export default Calendar;

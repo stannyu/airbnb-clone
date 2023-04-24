@@ -1,5 +1,3 @@
-import { SafeListing } from "./types";
-
 import getCurrentUser from "./actions/getCurrentUser";
 import getListings, { IListingsParams } from "./actions/getListings";
 
